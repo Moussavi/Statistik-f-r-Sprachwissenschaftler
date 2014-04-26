@@ -96,7 +96,8 @@ print(my.data**3)
  print(tabelle.rel)
 
 # Vervollständigen Sie folgende Zeile, sodass Prozentwerte aus den relativen
-# Häufigkeiten entst ehen: tabelle.prozent <- tabelle.rel code_hier 
+# Häufigkeiten entst ehen: 
+tabelle.prozent <- tabelle.rel * 100
  print(tabelle.prozent)
 
 # Aber die Frage bleibt, wie berechnen wir den Modus? Durch sortieren!
@@ -109,20 +110,23 @@ print(my.data**3)
 
 # Nehmen Sie das erste Element aus dem obigen Ergebnis, um den Modalwert zu
 # bekommen:
-# modus <- code_hier
+ modus <- which.max (tabelle.sorted)
+print(modus)
 
 # Verständisfrage: gibt es immer nur *einen* Modalwert? 
 # Wenn nicht, ist der Code oben korrekt? Warum?
 # Schreiben Sie Ihre Antwort als Comment hier.
 
-# antwort_hier
+# Es kann auch mehrere Modalwerte geben, wie bei einer bi- bzw. multimodalen Verteilung.
+# Da in diesem Fall nur ein Maximum gegeben ist, ist die Rechnung und das Erscheinen lediglich
+# eines Modalwertes hier trotzdem korrekt.
 
 # Als Abscheid ein Beispiel mit der Darstellung Frequenzdaten mit Säulendiagramm
 # bzw. Histogramm
 
-# library(ggplot2)
-# my.histogram <- qplot(more.data,geom="histogram")
-# print(my.histogram)
+ library(ggplot2)
+ my.histogram <- qplot(more.data,geom="histogram")
+ print(my.histogram)
 
 # Sie sind jetzt fertig -- das waren ganz viele Kleinigkeiten, aber
 # Kleinigkeiten, die wir immer wieder nutzen werden. Machen Sie einen Commit und

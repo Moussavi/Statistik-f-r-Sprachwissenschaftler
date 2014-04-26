@@ -38,14 +38,14 @@ print(mean(my.data))
 # vorläufig auskommentiert, damit der Output beim ersten Beispiel sehr
 # überschaubar war.)
 
-# print(my.data[3])
+ print(my.data[3])
 
 # Wenn wir eine Variable mit einer Zahl haben,
-# zahl <- 42
-# print(zahl)
+ zahl <- 42
+ print(zahl)
 
 # können wir auch sie indizieren (zwar nur mit [1]), weil es nur ein Element gibt
-# print(zahl[1])
+ print(zahl[1])
 
 # Diese starke Orientierung an Daten statt an Datenpunkte ist eine große Stärke
 # von R, die R von vielen anderen Programmiersprachen unterscheidet.

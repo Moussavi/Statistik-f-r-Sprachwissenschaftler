@@ -28,6 +28,7 @@ Es gibt in RStudio und im Internet **viel** zu Markdown. RStudio nutzt einen bes
 
 - Ich möchte meine gesammelten Datenmengen statistisch auswerten können
 - Ich möchte statistische Angaben in Studien verstehen können
+- Grundkenntnisse über Programmiersprachen
 
 
 ## R-Code-Blöcke

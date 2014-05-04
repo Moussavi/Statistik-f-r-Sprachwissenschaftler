@@ -1,6 +1,6 @@
 # Hausaufgabe 04
 # Romina Moussavi <Moussavi@students.uni-marburg.de>
-# 2014-05-02
+# 2014-05-04
 # Dieses Werk ist lizenziert unter einer CC-BY-NC-SA Lizenz.
 # Diese Datei darf weiter als Beispiel genutzt werden.
 
@@ -74,6 +74,7 @@ print( weight.grafik.basis + geom_density(aes(color=sex,fill=sex),alpha=0.5) )
 # zwischen Männern und Frauen gibt, schließen wir erstmal die Männer aus:
 frauen <- subset(dat, sex=="f")
 print(frauen)
+summary(frauen)
 
 # (Sie sollten sich wirklich überlegen, ob der Schritt "gut" ist. Haben wir 
 # dadurch unsre Ergebnisse verstellt? Sie müssen hier nichts schreiben, aber 
@@ -87,10 +88,10 @@ print(frauen)
 #sollten Sie die Plots so machen, damit man einen Vergleich zwischen den Gruppen
 #ziehen kann. Dafür gibt es verschiedene Möglichkeiten; die Wahl bleibt Ihnen
 #überlassen. 
-height.grafik <- ggplot(frauen,aes(x=height)) + geom_histogram(aes(y=..density..),fill="white",color="black") + geom_density()
+height.grafik <- ggplot(data=frauen,aes(x=height)) + geom_histogram(aes(y=..density..),fill="white",color="black") + geom_density()
 print(height.grafik)
 
-frauen.studiengang.bw <- frauen + geom_boxplot(aes(x=major,y=height))
+frauen.studiengang.bw <- ggplot(data=frauen,aes(x=major)) + geom_boxplot(aes(x=major,y=height))
 print(frauen.studiengang.bw)
 
 # Sehen die Studiengänge anders aus? Wir müssen hier noch relativ vorrsichtig
@@ -99,7 +100,7 @@ print(frauen.studiengang.bw)
 # (Keine explizite Antwort nötig, nur eine Überlegung.)
 
 # Wir können natürlich auch die Dichte anschauen:
-frauen.studiengang.dichte <- CODE_HIER
+frauen.studiengang.dichte <- ggplot(data=frauen,aes(x=height)) + geom_density(aes(x=height,color=major))
 print(frauen.studiengang.dichte)
 
 # Haben Sie den gleichen Eindruck wie bei Box-Whisker bekommen? Unterscheiden
@@ -131,17 +132,36 @@ print(klinisch)
 # Linguistik Kognition und Kommunikation und Speech Science
 # HINT: wie sehen die Namen aus bzw. wie werden sie im data frame buchstabiert?
 linkk <- frauen[frauen$major == "M.A..Linguistik.Kognition.und.Kommunikation",]
-speech <- frauen[frauen$major == "M.A..Speech.Science",] 
+print(linkk)
+speech <- frauen[frauen$major == "M.A..Speech.Science",]
+print(speech)
 
 # Berechnen Sie -- ohne Hilfe von sd() -- die Standardabweichung für die Größe der drei 
 # Gruppen. Sie können auch weitere Zeilen hinzufügen, wenn es Ihnen so leichter
 # ist. 
 # HINT: Formel und Beispiel für die Berechnung auf den Folien!
-klinisch.sd <- $s_klinische = \sqrt{s_klinische^2} = \sqrt{\frac{\sum_i^n \left( klinische_i - \bar{klinische}\right)^2}{n}}$
-linkk.sd <- $s_x = \sqrt{s_x^2} = \sqrt{\frac{\sum_i^n \left( x_i - \bar{x}\right)^2}{n}}$
-speech.sd <- $s_x = \sqrt{s_x^2} = \sqrt{\frac{\sum_i^n \left( x_i - \bar{x}\right)^2}{n}}$
+x <- (klinisch$height)
+y <- (linkk$height)
+z <- (speech$height)
+abweichung.klinisch <- x - mean(x)
+quadrat.abweichung.klinisch <- abweichung.klinisch^2
+varianz.x <- mean(quadrat.abweichung.klinisch)
+klinisch.sd <- sqrt(varianz.x)
+print(klinisch.sd)
+
+abweichung.linkk <- y - mean(y)
+quadrat.abweichung.linkk <- abweichung.linkk^2
+varianz.y <- mean(quadrat.abweichung.linkk)
+linkk.sd <- sqrt(varianz.y)
+print(linkk.sd)
+
+abweichung.speech <- z - mean(z)
+quadrat.abweichung.speech <- abweichung.speech^2
+varianz.z <- mean(quadrat.abweichung.speech)
+speech.sd <- sqrt(varianz.z)
+print(speech.sd)
 
 # Berichten Sie jetzt die Mittelwerte und Standardabweichungen für die drei Gruppen. Die erste Gruppe steht hier als Muster:
 print( paste("Studiengang: Klinische Linguistik","Mean:",mean(klinisch$height),"SD:",klinisch.sd) )
-CODE_HIER
-
+print( paste("Studiengang: Linguistik Kognition und Kommunikation","Mean:",mean(linkk$height),"SD:",linkk.sd) )
+print( paste("Studiengang: Speech Science","Mean:",mean(speech$height),"SD:",speech.sd) )

@@ -87,18 +87,19 @@ Aber wir hoffen alle, dass wir doch eine gute Note bekommen. Fügen Sie einen Co
 
 ```{r}
 for(s in c(3,4,5) ){
-  bestanden <- pnorm(13,mean=mu,sd=s, lower.tail = FALSE)
-  output <- paste("Bei einer Standabweichung von",s, "bestehen",bestanden*100,"%.")
+  sehr.gut <- pnorm(13,mean=mu,sd=s, lower.tail = FALSE)
+  output <- paste("Bei einer Standabweichung von",s, "haben",sehr.gut*100,"% sehr gute Noten.")
   print(output)
 }
 ```
 Wie steht die Anzahl guter Noten in Beziehung zur Anzahl schlechter Noten? 
 
-antwort_hier
+Die Anzahl guter Noten ist geringer als die Anzahl schlechter Noten (teilweise sogar nur ein Drittel der Zahl schlechter Noten.
 
 Warum?
 
-antwort_hier
+Durch die ungleiche Anzahl an Noten, mit denen man im sehr guten Bereich liegt (13, 14, 15 Punkte) bzw. durchgefallen ist (0, 1, 2, 3, 4, 5 Punkte), steigt auch die Wahrscheinlichkeit einer schlechten Note. Auch durch eine hohe Standardabweichung wird dies begünstigt.
+
 
 ## Kurtosis und Schiefe
 Kurtosis (im Deutschen auch *Wölbung*) ist ein Maß dafür, wie spitz eine Verteilung ist. Die Normalverteilung wird nie zu extrem spitz -- der Gipfel bleibt immer schön rund, obwohl er manchmal eng wird. Andere Verteilungen (z.B. die Laplace-Verteilung ) haben Gipfel, die nicht rund sind.   
@@ -107,7 +108,7 @@ Schiefe (*skewness*) beschriebt die (A)Symmetrie einer Verteilung. Eine Verteilu
 
 Die Verteilung von Noten ist oft schief mit mehr guten Noten. Ist die Verteilung rechts- oder linksschief?
 
-antwort_hier
+linksschief
 
 Vielleicht hilft folgende Grafik mit der Visualisierung:
 
@@ -126,7 +127,10 @@ noten.dist
 
 Jetzt können wir die absoluten Häufigkeiten auch plotten:
 
-code_block_hier
+```{r}
+library(ggplot2)
+ggplot(data=noten.dist) + geom_line(aes(x=Anzahl, y=Notenpunkte)) + scale_x_continuous(limits=c(0,7))
+```
 
 Beantworten Sie ein paar Fragen über die Verteilung, indem Sie den passenden R-Code einsetzen:
 

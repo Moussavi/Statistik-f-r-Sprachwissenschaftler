@@ -66,7 +66,7 @@ Welche Verteilung sieht am fairsten aus? Warum?
 
 Wir können das konkreter machen: welcher Anteil der Studenten bekommt bei den jeweiligen Verteilungen eine 1 (zumindest 13 NP)? Für die Verteilung mit $\sigma = 3$ sieht die Berechnung mit R so aus:
 ```{r}
-pnorm(13,mean=mu,sd=3,lower.tail=FALSE)
+pnorm(12,mean=mu,sd=3,lower.tail=FALSE)
 ```
 Oder vielleicht interessiert uns der Anteil der Durchgefallenen (< 5NP):
 ```{r}
@@ -87,7 +87,7 @@ Aber wir hoffen alle, dass wir doch eine gute Note bekommen. Fügen Sie einen Co
 
 ```{r}
 for(s in c(3,4,5) ){
-  sehr.gut <- pnorm(13,mean=mu,sd=s, lower.tail = FALSE)
+  sehr.gut <- pnorm(12,mean=mu,sd=s, lower.tail = FALSE)
   output <- paste("Bei einer Standabweichung von",s, "haben",sehr.gut*100,"% sehr gute Noten.")
   print(output)
 }
@@ -129,7 +129,7 @@ Jetzt können wir die absoluten Häufigkeiten auch plotten:
 
 ```{r}
 library(ggplot2)
-ggplot(data=noten.dist) + geom_line(aes(x=Anzahl, y=Notenpunkte)) + scale_x_continuous(limits=c(0,7))
+ggplot(data=noten.dist,aes(x=Notenpunkte,y=Anzahl,color=Standardabweichung)) + geom_line() + scale_x_continuous(limits=c(0,16))
 ```
 
 Beantworten Sie ein paar Fragen über die Verteilung, indem Sie den passenden R-Code einsetzen:
@@ -142,16 +142,15 @@ Beantworten Sie ein paar Fragen über die Verteilung, indem Sie den passenden R-
 
 2. Wie viele Studenten bekommen zumindest 10 NP?
 
-    `code_hier` Studenten bekommen zumindest 10 Notenpunkte.
+    `r (pnorm(9,mean=mu,sd=3, lower.tail = FALSE)) * n` Studenten bekommen zumindest 10 Notenpunkte.
 
 3. Wie viele Studenten bekommen weniger als 10 NP?
 
-    `code_hier` Studenten bekommen weniger als 10 Notenpunkte.
+     `r (pnorm(9,mean=mu,sd=3)) * n` Studenten bekommen weniger als 10 Notenpunkte.
 
 4. Wie viele Studenten bekommen weniger als 8 NP?
 
-    `code_hier` Studenten bekommen weniger als 8 Notenpunkte.
-
+     `r (pnorm(7,mean=mu,sd=3)) * n` Studenten bekommen weniger als 8 Notenpunkte.
 
 (Die Einrückung mit 4 Leerschlägen ist die Syntax für mehrere Absätze pro Punkt auf der Liste.)
 
@@ -162,50 +161,68 @@ Um überdurchschnittlich zu sein, muss man mehr als `r qnorm(0.5,mean=mu,sd=3)` 
 
 Nicht so überraschend, dass "überdurchschnittlich" auch "mehr Punkte als den Durchschnitt bekommen" heißt! Wie sieht es aus, wenn wir besser als 99% der anderen abschließen möchten?
 
-Um in dem besten 1% abzuschließen, muss man zumindest `code_hier` Notenpunkte bekommen.
+Um in dem besten 1% abzuschließen, muss man zumindest `r qnorm(0.99,mean=mu,sd=3)` Notenpunkte bekommen.
 
 ## z-Transformation
 Bei der Überprüfung der Lehrqualität scheint es der Verwaltung, dass ein gewisser Dozent andere Noten als andere Dozenten vergibt. Es wird entschieden, dass der Notenspiegel bei den Teilnehmern in einem von seinen Kursen getestet wird, um zu schauen, ob er sich von signifikant von der idealisierten Notenverteilung ($\mu=8,\sigma=3$) unterscheidet. Um zu zeigen, dass Gott $\alpha=0.06$ so viel liebt wie $\alpha=0.05$ `r citep("10.1037/0003-066X.44.10.1276")`, setzt die Verwaltung das Signikanzniveau auf 0.06. 
 
-Der kritische Wert für einen einseitigen $z$-Test ist `code_hier`.
+Der kritische Wert für einen einseitigen $z$-Test ist 
 
-Die kritischen Werte für einen zweiseitigen $z$-Test sind $\pm$`code_hier`.
+einseitig <- qnorm(0.94)
+print(einseitig)
+
+Die kritischen Werte für einen zweiseitigen $z$-Test sind $\pm$
+
+qnorm(0.97)
 
 ### Gibt es einen Unterschied?
-Bei diesem Dozenten ist die Verwaltung wirklich unsicher, ob und was für einen Unterschied es geben könnte. (Welche Testart sollte man hier nutzen?)
+Bei diesem Dozenten ist die Verwaltung wirklich unsicher, ob und was für einen Unterschied es geben könnte. (Welche Testart sollte man hier nutzen?) Zweiseitiger Test, da Abweichungsgründe noch nicht klar.
 
 In einem kleinen Seminar mit 7 Studenten beträgt der Durchschnittswert 10. Unterscheidet sich der Notenspiegel von dem idealen? Berechnen Sie den $z$-Test:
 
-code_hier
+```{r}
+z.Wert.7 <-sqrt(7)*((10-8)/3)
+print(z.Wert.7)
+```
 
-Das ist ein **_eins_von_signifikanter_insignifikanter_** Unterschied. 
+Das ist ein insignifikanter Unterschied. 
 
 In einer Vorlesung vom selben Dozenten mit 50 Teilnehmern beträgt der Durchschnittswert wieder 10. (Es scheint, dass der Dozent 10 besonders toll findet.) Berechnen Sie den $z$-Test:
 
-code_hier
 
-Das ist ein **_eins_von_signifikanter_insignifikanter_** Unterschied. 
+```{r}
+z.Wert.50 <-sqrt(50)*((10-8)/3)
+print(z.Wert.50)
+```
 
-Ist die Benotung vom Dozenten weniger als ideal? 
+Das ist ein signifikanter Unterschied. 
+
+Ist die Benotung vom Dozenten weniger als ideal? Ja, der Unterschied zum kritischen Wert ist hier zu groß.
 
 ### Ein anderer, böserer? Dozent
-Die Verwaltung ist auch auf einen anderen Dozenten aufmerksam geworden, weil manche Studenten behaupten, er würde zu streng benoten. (Welche Testart sollte man hier nutzen?)
+Die Verwaltung ist auch auf einen anderen Dozenten aufmerksam geworden, weil manche Studenten behaupten, er würde zu streng benoten. (Welche Testart sollte man hier nutzen?) Einseitiger Test, da vor allem die schlechteren Noten betrachtet werden müssen.
 
 In einem mittelgroßen Seminar mit 20 Studenten beträgt der Durchschnittswert 7. Der Dozent sagt, dass das wunderbar nah am Erwartungswert (8) ist, und dass man ihn in Ruhe lassen sollte. Ist er zu streng?
 
 Berechnen Sie den $z$-Test:
 
-code_hier
+```{r}
+z.Wert.20 <-sqrt(20)*((7-8)/3)
+print(z.Wert.20)
+```
 
-Das ist ein **_eins_von_signifikanter_insignifikanter_** Unterschied. 
+Das ist ein insignifikanter Unterschied. 
 
 Später ergibt sich, dass es eigentlich 25 Studenten im Kurs gab. (Der Dozent hat "einen Tippfehler" gemacht, als er seine Teilnehmerzahl per Mail an die Verwaltung geschickt hat.) Der Durchschnittswert bleibt -- behauptet der Dozent -- immer noch bei 7. Er behauptet weiterhin, dass das wunderbar nah am Erwartungswert (8) ist, und dass man ihn in Ruhe lassen sollte. Ist er zu streng?
 
 Berechnen Sie den $z$-Test:
 
-code_hier
+```{r}
+z.Wert.25 <-sqrt(25)*((7-8)/3)
+print(z.Wert.25)
+```
 
-Das ist ein **_eins_von_signifikanter_insignifikanter_** Unterschied. 
+Das ist ein insignifikanter Unterschied. 
 
 ## Zum Überlegen
 Gibt es einen Grund, weshalb die Noten normal verteilt sein sollten? Warum ist das die übliche Annahme?

@@ -66,7 +66,7 @@ Welche Verteilung sieht am fairsten aus? Warum?
 
 Wir können das konkreter machen: welcher Anteil der Studenten bekommt bei den jeweiligen Verteilungen eine 1 (zumindest 13 NP)? Für die Verteilung mit $\sigma = 3$ sieht die Berechnung mit R so aus:
 ```{r}
-pnorm(13,mean=mu,sd=3,lower.tail=FALSE)
+pnorm(12,mean=mu,sd=3,lower.tail=FALSE)
 ```
 Oder vielleicht interessiert uns der Anteil der Durchgefallenen (< 5NP):
 ```{r}
@@ -87,7 +87,7 @@ Aber wir hoffen alle, dass wir doch eine gute Note bekommen. Fügen Sie einen Co
 
 ```{r}
 for(s in c(3,4,5) ){
-  sehr.gut <- pnorm(13,mean=mu,sd=s, lower.tail = FALSE)
+  sehr.gut <- pnorm(12,mean=mu,sd=s, lower.tail = FALSE)
   output <- paste("Bei einer Standabweichung von",s, "haben",sehr.gut*100,"% sehr gute Noten.")
   print(output)
 }
@@ -129,7 +129,7 @@ Jetzt können wir die absoluten Häufigkeiten auch plotten:
 
 ```{r}
 library(ggplot2)
-ggplot(data=noten.dist) + geom_line(aes(x=Anzahl, y=Notenpunkte)) + scale_x_continuous(limits=c(0,7))
+ggplot(data=noten.dist,aes(x=Notenpunkte,y=Anzahl,color=Standardabweichung)) + geom_line() + scale_x_continuous(limits=c(0,16))
 ```
 
 Beantworten Sie ein paar Fragen über die Verteilung, indem Sie den passenden R-Code einsetzen:
@@ -142,16 +142,15 @@ Beantworten Sie ein paar Fragen über die Verteilung, indem Sie den passenden R-
 
 2. Wie viele Studenten bekommen zumindest 10 NP?
 
-    `code_hier` Studenten bekommen zumindest 10 Notenpunkte.
+    `r (pnorm(9,mean=mu,sd=3, lower.tail = FALSE)) * n` Studenten bekommen zumindest 10 Notenpunkte.
 
 3. Wie viele Studenten bekommen weniger als 10 NP?
 
-    `code_hier` Studenten bekommen weniger als 10 Notenpunkte.
+     `r (pnorm(9,mean=mu,sd=3)) * n` Studenten bekommen weniger als 10 Notenpunkte.
 
 4. Wie viele Studenten bekommen weniger als 8 NP?
 
-    `code_hier` Studenten bekommen weniger als 8 Notenpunkte.
-
+     `r (pnorm(7,mean=mu,sd=3)) * n` Studenten bekommen weniger als 8 Notenpunkte.
 
 (Die Einrückung mit 4 Leerschlägen ist die Syntax für mehrere Absätze pro Punkt auf der Liste.)
 
@@ -162,7 +161,7 @@ Um überdurchschnittlich zu sein, muss man mehr als `r qnorm(0.5,mean=mu,sd=3)` 
 
 Nicht so überraschend, dass "überdurchschnittlich" auch "mehr Punkte als den Durchschnitt bekommen" heißt! Wie sieht es aus, wenn wir besser als 99% der anderen abschließen möchten?
 
-Um in dem besten 1% abzuschließen, muss man zumindest `code_hier` Notenpunkte bekommen.
+Um in dem besten 1% abzuschließen, muss man zumindest `r qnorm(0.99,mean=mu,sd=3)` Notenpunkte bekommen.
 
 ## z-Transformation
 Bei der Überprüfung der Lehrqualität scheint es der Verwaltung, dass ein gewisser Dozent andere Noten als andere Dozenten vergibt. Es wird entschieden, dass der Notenspiegel bei den Teilnehmern in einem von seinen Kursen getestet wird, um zu schauen, ob er sich von signifikant von der idealisierten Notenverteilung ($\mu=8,\sigma=3$) unterscheidet. Um zu zeigen, dass Gott $\alpha=0.06$ so viel liebt wie $\alpha=0.05$ `r citep("10.1037/0003-066X.44.10.1276")`, setzt die Verwaltung das Signikanzniveau auf 0.06. 

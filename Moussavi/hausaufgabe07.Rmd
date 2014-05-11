@@ -168,8 +168,7 @@ Bei der Überprüfung der Lehrqualität scheint es der Verwaltung, dass ein gewi
 
 Der kritische Wert für einen einseitigen $z$-Test ist 
 
-einseitig <- qnorm(0.94)
-print(einseitig)
+qnorm(0.94)
 
 Die kritischen Werte für einen zweiseitigen $z$-Test sind $\pm$
 

@@ -1,6 +1,6 @@
 % Hausaufgabe 07
 % Romina Moussavi <Moussavi@students.uni-marburg.de>
-% 2014-05-09
+% 2014-05-11
 % Diese Datei darf weiter als Beispiel genutzt werden.
 
 Falls die Umlaute in dieser und anderen Dateien nicht korrekt dargestellt werden, sollten Sie File > Reopen with Encoding > UTF-8 sofort machen (und auf jeden Fall ohne davor zu speichern), damit die Enkodierung korrekt erkannt wird! 
@@ -166,13 +166,9 @@ Um in dem besten 1% abzuschließen, muss man zumindest `r qnorm(0.99,mean=mu,sd=
 ## z-Transformation
 Bei der Überprüfung der Lehrqualität scheint es der Verwaltung, dass ein gewisser Dozent andere Noten als andere Dozenten vergibt. Es wird entschieden, dass der Notenspiegel bei den Teilnehmern in einem von seinen Kursen getestet wird, um zu schauen, ob er sich von signifikant von der idealisierten Notenverteilung ($\mu=8,\sigma=3$) unterscheidet. Um zu zeigen, dass Gott $\alpha=0.06$ so viel liebt wie $\alpha=0.05$ `r citep("10.1037/0003-066X.44.10.1276")`, setzt die Verwaltung das Signikanzniveau auf 0.06. 
 
-Der kritische Wert für einen einseitigen $z$-Test ist 
+Der kritische Wert für einen einseitigen $z$-Test ist `r qnorm(0.94)`
 
-qnorm(0.94)
-
-Die kritischen Werte für einen zweiseitigen $z$-Test sind $\pm$
-
-qnorm(0.97)
+Die kritischen Werte für einen zweiseitigen $z$-Test sind $\pm$ `r qnorm(0.97)`
 
 ### Gibt es einen Unterschied?
 Bei diesem Dozenten ist die Verwaltung wirklich unsicher, ob und was für einen Unterschied es geben könnte. (Welche Testart sollte man hier nutzen?) Zweiseitiger Test, da Abweichungsgründe noch nicht klar.

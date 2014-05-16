@@ -1,8 +1,8 @@
 # Hausaufgabe 09
-# Phillip Alday <phillip.alday@staff.uni-marburg.de>
-# 2014-05-02
+# Romina Moussavi <Moussavi@students.uni-marburg.de>
+# 2014-05-16
 # Dieses Werk ist lizenziert unter einer CC-BY-NC-SA Lizenz.
-
+# Diese Datei darf weiter als Beispiel genutzt werden.
 
 # Die nächsten Punkte sollten langsam automatisch sein...
 # 1. Kopieren Sie diese Datei in Ihren Ordner (das können Sie innerhalb RStudio machen 

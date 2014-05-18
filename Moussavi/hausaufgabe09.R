@@ -137,23 +137,32 @@ if (shapiro2$p.value > 0.05){
 # Daten. Nach jedem Test sollten Sie auch programmatisch (=durch if-Blöcke)
 # ausdrücken, ob die Varianzen homogen sind.
 
-subj1log <- rt[log(rt$subj == "1"), "RT"]
-subj2log <- rt[log(rt$subj == "2"), "RT"]
-var.test(subj1log, subj2log)
-print(var.test)
+subj1log <- log(subj1)
+subj2log <- log(subj2)
+log.var.test<-var.test(subj1log, subj2log)
+print(log.var.test)
 
-if (shapiro2$p.value > 0.05){
-  print("Shapiro's test insignikant, die Daten sind normal verteilt.")
+#oder
+
+subjlog1 <- rt[rt$subj == "1", "logRT"]
+subjlog2 <- rt[rt$subj == "2", "logRT"]
+log.var.test2<-var.test(subjlog1, subjlog2)
+print(log.var.test2)
+
+
+if (log.var.test$p.value > 0.05){
+  print("F-Test insignikant, die Daten sind homogen.")
 }else{
-  print("Shapiro's test signikant, die Daten sind nicht normal verteilt.")
+  print("F-Test signikant, die Daten sind heterogen.")
 }
 
-print(leveneTest(logrt$RT ~ logrt$subj))
+log.leveneTest <- leveneTest(rt$logRT ~ rt$subj)
+print(log.leveneTest)
 
-if (shapiro2$p.value > 0.05){
-  print("Shapiro's test insignikant, die Daten sind normal verteilt.")
+if (log.leveneTest$`Pr(>F)` [1]> 0.05){
+  print("Lavene Test insignikant, die Daten sind homogen.")
 }else{
-  print("Shapiro's test signikant, die Daten sind nicht normal verteilt.")
+  print("Lavene Test signikant, die Daten sind nicht heterogen.")
 }
 
 # Sind die Daten "normaler" gewordern? Berechnen Sie den Shapiro-Test für beide 
@@ -161,21 +170,21 @@ if (shapiro2$p.value > 0.05){
 # ausdrücken, ob die Daten normal verteilt sind. 
 # (Für die fortgeschrittenen: hier könnte man auch eine for-Schleife nutzen...)
 
-shapiro <- shapiro.test(rt[rt$subj==1,"RT"])
-print(shapiro)
+shapiro.log <- shapiro.test(log(rt[rt$subj==1,"RT"]))
+print(shapiro.log)
 
 
-if (shapiro$p.value > 0.05){
+if (shapiro.log$p.value > 0.05){
   print("Shapiro's test insignikant, die Daten sind normal verteilt.")
 }else{
   print("Shapiro's test signikant, die Daten sind nicht normal verteilt.")
 }
 
 
-shapiro2 <- shapiro.test(rt[rt$subj==2,"RT"])
-print(shapiro2)
+shapiro.log2 <- shapiro.test(log(rt[rt$subj==2,"RT"]))
+print(shapiro.log2)
 
-if (shapiro2$p.value > 0.05){
+if (shapiro.log2$p.value > 0.05){
   print("Shapiro's test insignikant, die Daten sind normal verteilt.")
 }else{
   print("Shapiro's test signikant, die Daten sind nicht normal verteilt.")
@@ -192,17 +201,17 @@ welch.log <- t.test(subj1log,subj2log)
 print(two.sample.log)
 print(welch.log)
 
-if (shapiro2$p.value > 0.05){
-  print("Shapiro's test insignikant, die Daten sind normal verteilt.")
+if (two.sample.log$p.value > 0.05){
+  print("t-Test insignikant, die Testgruppen zeigen keinen signifikanten Unterschied.")
 }else{
-  print("Shapiro's test signikant, die Daten sind nicht normal verteilt.")
+  print("t-Test signikant, die Testgruppen zeigen einen sigifikanten Unterschied.")
 }
 
-if (shapiro2$p.value > 0.05){
-  print("Shapiro's test insignikant, die Daten sind normal verteilt.")
+if (welch.log$p.value > 0.05){
+  print("Welch Test insignikant, die Testgruppen zeigen keinen signifikanten Unterschied.")
 }else{
-  print("Shapiro's test signikant, die Daten sind nicht normal verteilt.")
+  print("Welch Test signikant, die Testgruppen zeigen einen sigifikanten Unterschied.")
 }
 
-t.diff <- welch$statistic - two.sample$statistic
+t.diff <- welch.log$statistic - two.sample.log$statistic
 print(paste("Die Differenz zwischen den beiden t-Werten ist",t.diff,"."))

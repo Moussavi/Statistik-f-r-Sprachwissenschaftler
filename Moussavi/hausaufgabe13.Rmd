@@ -106,7 +106,7 @@ Sind alle Plots gleich gut?
 Bei "Item" berechnen wir die Mittelwerte aller Trials innerhalb eines Items, d.h. wir nehmen den itemweise Mittelwert über Versuchpersonen hinweg. Dafür können wir `aggregate()` nutzen.
 
 ```{r}
-# priming.by.item <- aggregate(RT ~ cond * item,data=priming,FUN = mean)
+priming.by.item <- aggregate(RT ~ cond * item,data=priming,FUN = mean)
 ```
 
 Wir wollen auch hier die Daten tabellerisch darstellen. Erstellen Sie eine Tabelle in Wide-Format für die Mittelwerte by Item.
@@ -118,7 +118,9 @@ print(xtable(priming.by.item.wide1),type="html",include.rownames=FALSE)
 
 Und *eine* passende Grafik für die Daten by Item sollten wir auch generieren:
 
-CODE_BLOCK_HIER
+```{r}
+ggplot(data=priming.by.item) + geom_density(aes(x=RT,color=cond,fill=cond),alpha=0.3)
+```
 
 Sehen die Daten by Subject und by Item gleich aus? Wie sehen sie im Vergleich zu den Single-Trial-Daten aus?
 
@@ -163,9 +165,7 @@ Sie fragen sich evtl, woher der weitere Faktor `(Intercept)` kommt. Intercept is
 Die jeweiligen Faktoren haben alle zwei Stufen, also weniger als drei -- Spherizität ist kein Problem!
 
 ## Item-Analyse
-```{r}
-ggplot(data=priming) + geom_density(aes(x=RT,color=cond,fill=cond),alpha=0.1) + facet_wrap(~item)
-```
+
 Führen Sie die entsprechende Item-Analyse aus.
 
 ```{r}

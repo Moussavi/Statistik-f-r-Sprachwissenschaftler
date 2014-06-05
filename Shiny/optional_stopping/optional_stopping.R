@@ -1,3 +1,20 @@
+# Copyright 2014, Phillip Alday
+#
+# This file is part of Optional Stoppping.
+#
+# Optional Stopping is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 library(ggplot2)
 library(gridExtra)
 library(scales)
@@ -15,6 +32,7 @@ simulate <- function(alpha=0.05,n=10,maxiter=3000,...){
   a <- rnorm(n)
   b <- rnorm(n)
   p <- rep(NA,n-1)
+  t <- rep(NA,n-1)
   ua <- partialmean(a[1:n-1])
   ub <- partialmean(b[1:n-1])
   ci.min <- rep(NA,n-1)
@@ -22,13 +40,14 @@ simulate <- function(alpha=0.05,n=10,maxiter=3000,...){
   
   count <- n
   for(i in 1:maxiter){
-    t <- t.test(a,b)
-    p <- c(p,t$p.value)
-    ua <- c(ua,t$estimate["mean of x"])
-    ub <- c(ub,t$estimate["mean of y"])
-    ci.max <- c(ci.max, t$conf.int[2])
-    ci.min <- c(ci.min, t$conf.int[1])
-    if(t$p.value <= alpha){
+    t0 <- t.test(a,b)
+    t <- c(t,t0$statistic)
+    p <- c(p,t0$p.value)
+    ua <- c(ua,t0$estimate["mean of x"])
+    ub <- c(ub,t0$estimate["mean of y"])
+    ci.max <- c(ci.max, t0$conf.int[2])
+    ci.min <- c(ci.min, t0$conf.int[1])
+    if(t0$p.value <= alpha){
       break
     }
     
@@ -56,6 +75,10 @@ simulate <- function(alpha=0.05,n=10,maxiter=3000,...){
   pvals <- data.frame(p)
   pvals$idx <- as.numeric(row.names(pvals))
   
+  tvals <- data.frame(t)
+  tvals$idx <- as.numeric(row.names(tvals))
+  
+  
   df <- melt(df,measure.vars=c("a","b"),variable_name="group")
   du <- melt(du,measure.vars=c("a","b"),variable_name="group")
   
@@ -77,6 +100,10 @@ simulate <- function(alpha=0.05,n=10,maxiter=3000,...){
                    geom_line() + 
                    geom_abline(intercept=alpha, slope=0, color="red",alpha=I(1/2)) +
                    scale_y_continuous(breaks= pretty_breaks(),limits=c(0,1))
+       ,tvals=tvals
+       ,tvals.plot=ggplot(data=tvals,aes(x=idx,y=t)) + 
+         geom_line() + 
+         scale_y_continuous(breaks= pretty_breaks())
        )
 }
 

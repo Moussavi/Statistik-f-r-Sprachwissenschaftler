@@ -1,6 +1,6 @@
 % Hausaufgabe 16
 % Romina Moussavi <Moussavi@students.uni-marburg.de>
-% 2014-06-13
+% 2014-06-15
 
 Falls die Umlaute in dieser und anderen Dateien nicht korrekt dargestellt werden, sollten Sie File > Reopen with Encoding > UTF-8 sofort machen (und auf jeden Fall ohne davor zu speichern), damit die Enkodierung korrekt erkannt wird! 
 
@@ -65,6 +65,40 @@ Haben Sie dabei explorativ oder konfirmativ gearbeitet? Was hat das für eine Au
 
 neun.fak.anova <- aov(price~carat + cut + color + clarity + x + y + z + depth + table, data=diamonds)
 summary(neun.fak.anova)
+
+ggplot(diamonds,aes(x=carat,y=price)) + geom_point()
+ggplot(diamonds,aes(x=cut,y=price)) + geom_point()
+ggplot(diamonds,aes(x=color,y=price)) + geom_point()
+ggplot(diamonds,aes(x=clarity,y=price)) + geom_point()
+ggplot(diamonds,aes(x=x,y=price)) + geom_point()
+ggplot(diamonds,aes(x=y,y=price)) + geom_point()
+ggplot(diamonds,aes(x=z,y=price)) + geom_point()
+ggplot(diamonds,aes(x=depth,y=price)) + geom_point()
+ggplot(diamonds,aes(x=table,y=price)) + geom_point()
+
+Fast alle Kriterien eines Diamanten weisen ähnlich signifikante Beziehungen zum Preis auf. Nur die Breite (y) weist diese starke Signifikanz nicht auf.
+
+Anschlussfrage: Ist das Volumen (Höhe * Länge * Breite) insgesamt am ausschlaggebensten für den Preis?
+
+Diamant.Vol <- diamonds$x * diamonds$y * diamonds$z
+summary(Diamant.Vol)
+
+sieben.fak.anova <- aov(price~carat + cut + color + clarity + Diamant.Vol + depth + table, data=diamonds)
+summary(sieben.fak.anova)
+
+ggplot(diamonds,aes(x=Diamant.Vol,y=price)) + geom_point()
+
+Tatsächlich hat das Gesamtvolumen eine starke Signifikanz. "Depth" jedoch nun nicht mehr.
+
+Sicherlich hängen Größe und Gewicht zusammen. Gibt es aber auch einen Zusammenhang zwischen Reinheit und Gewicht eines Diamanten?
+
+carat.anova <- aov(carat~clarity + Diamant.Vol, data=diamonds)
+summary(carat.anova)
+
+ggplot(carat.anova,aes(x=carat,y=clarity,color=Diamant.Vol)) + geom_point()
+
+Nicht nur Gewicht, sondern auch Reinheit eines Diamanten weisen einen signifikanten Bezug zum Karat-Wert auf.
+
 
 # Lizenz
 Dieses Werk ist lizenziert unter einer CC-BY-NC-SA Lizenz.
